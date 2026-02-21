@@ -1,7 +1,7 @@
-# Python ইমেজ ব্যবহার করা হচ্ছে
+# Python 3.10 slim ইমেজ ব্যবহার করা হচ্ছে
 FROM python:3.10-slim
 
-# Selenium এবং Chrome এর জন্য প্রয়োজনীয় ডিপেন্ডেন্সি ইনস্টল করা
+# প্রয়োজনীয় সিস্টেম ডিপেন্ডেন্সি ইনস্টল করা (libgconf-2-4 বাদ দেওয়া হয়েছে কারণ এটি এখন আর লাগে না)
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
@@ -9,18 +9,16 @@ RUN apt-get update && apt-get install -y \
     curl \
     xvfb \
     libxi6 \
-    libgconf-2-4 \
     libnss3 \
     libxss1 \
     libasound2 \
     libgbm1 \
     fonts-liberation \
-    libappindicator3-1 \
     xdg-utils \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Google Chrome ইনস্টল করা
+# Google Chrome ইনস্টল করা (সরাসরি অফিসিয়াল সোর্স থেকে)
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb \
     && apt-get update && apt-get install -y ./chrome.deb \
     && rm chrome.deb
@@ -32,7 +30,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# সব কোড কপি করা
+# আপনার সব কোড কপি করা
 COPY . .
 
 # বোট রান করার কমান্ড
